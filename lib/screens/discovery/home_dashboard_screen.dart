@@ -17,7 +17,7 @@ class HomeDashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) => DataView(
       builder: (context, data) => PeerPage(
-              title: 'SLIIT Peer • Home',
+              title: 'Home',
               bottom: const PeerNavigation(index: 0),
               actions: [
                 IconButton(

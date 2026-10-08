@@ -36,11 +36,9 @@ class _StudentScheduleScreenState extends State<StudentScheduleScreen> {
               .toList()
         ];
         return PeerPage(
-            title: 'SLIITPeer • Student Schedule',
+            title: 'Bookings',
             bottom: const PeerNavigation(index: 2),
             children: [
-              const PeerBadge('● TUTEE PORTAL', color: Color(0xFFA84800)),
-              const SizedBox(height: 12),
               const Text('My Study Schedule',
                   style: TextStyle(
                       fontSize: 28,

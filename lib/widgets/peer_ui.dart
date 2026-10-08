@@ -32,22 +32,16 @@ class PeerPage extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: const Color(0xFFF7F8FF),
           surfaceTintColor: Colors.transparent,
-          titleSpacing: 0,
+          titleSpacing: 16,
           title: Row(children: [
-            const SliitPeerLogo(fontSize: 9, showBadge: true),
-            const SizedBox(width: 12),
             Expanded(
                 child: Text(title,
-                    maxLines: 2,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                         fontSize: 18, fontWeight: FontWeight.w700))),
           ]),
-          actions: actions ??
-              [
-                const Padding(
-                    padding: EdgeInsets.all(12),
-                    child: UserAvatar(initials: 'KJ', radius: 18))
-              ],
+          actions: actions,
         ),
         body: SafeArea(
             child: ListView(
