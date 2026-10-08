@@ -61,7 +61,8 @@ class BookingRepository {
       final slot = await tx.get(slotRef);
       final current = PeerBooking(snapshot.id, snapshot.data()!);
       final tutor = current.tutorId == data.uid;
-      final valid = status == 'cancelled' && current.active ||
+      final valid = status == 'cancelled' && current.active &&
+              (tutor || current.status == 'pending') ||
           tutor &&
               current.status == 'pending' &&
               ['confirmed', 'declined'].contains(status) ||
@@ -100,7 +101,7 @@ class BookingRepository {
       final current = PeerBooking(doc.id, doc.data()!);
       final slot = PeerSlot(target.id, target.data()!);
       if (current.tuteeId != data.uid ||
-          !current.active ||
+          current.status != 'pending' ||
           slot.tutorId != current.tutorId ||
           slot.bookingId != null ||
           !slot.available ||

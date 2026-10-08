@@ -86,7 +86,8 @@ test('FR8 / FR10: participant acceptance and cancellation are authorized; strang
   await assert.rejects(commit([write('notifications/test-confirmed',{message:'Forged'},['message'])],users.student.idToken));
   await remove('notifications/test-confirmed',users.student.idToken);
   await assert.rejects(get(`bookings/${id}`,users.pending.idToken));
-  await commit([write(`bookings/${id}`,{status:'cancelled'},['status']),write(`availability/${id}`,{bookingId:null},['bookingId'])],users.student.idToken);
+  await assert.rejects(commit([write(`bookings/${id}`,{status:'cancelled'},['status']),write(`availability/${id}`,{bookingId:null},['bookingId'])],users.student.idToken));
+  await commit([write(`bookings/${id}`,{status:'cancelled'},['status']),write(`availability/${id}`,{bookingId:null},['bookingId'])],users.tutor.idToken);
   assert.equal((await get(`availability/${id}`)).bookingId,null);
 });
 test('FR10: rescheduling atomically releases the old slot and reserves the new one', async () => {

@@ -8,6 +8,7 @@ import 'package:sliit_peer_tutoring/services/backend_config.dart';
 import 'package:sliit_peer_tutoring/widgets/session_home.dart';
 import 'package:sliit_peer_tutoring/models/peer_records.dart';
 import 'package:sliit_peer_tutoring/screens/booking/availability_calendar_screen.dart';
+import 'package:sliit_peer_tutoring/screens/booking/booking_details_screen.dart';
 
 class _User extends Fake implements User {
   @override
@@ -39,7 +40,29 @@ void main() {
     AppData.instance.profile = null;
     AppData.instance.ownTutor = null;
     AppData.instance.slots = [];
+    AppData.instance.bookings = [];
   });
+
+  for (final status in ['pending', 'confirmed']) {
+    testWidgets('Tutee booking controls respect $status status', (tester) async {
+      AppData.instance.bookings = [PeerBooking('policy-booking', {
+        'tutorId': 'other-tutor', 'tuteeId': 'test-user',
+        'tutorName': 'Tutor', 'tuteeName': 'Student', 'module': 'IT3060',
+        'slotId': 'slot', 'status': status, 'mode': 'Campus', 'venue': 'Library',
+        'notes': '', 'start': DateTime.now().add(const Duration(days: 1)),
+        'end': DateTime.now().add(const Duration(days: 1, hours: 1)),
+      })];
+      await tester.pumpWidget(const MaterialApp(home: BookingDetailsScreen(bookingId: 'policy-booking')));
+      await tester.scrollUntilVisible(find.text('Report Session Issue'), 200,
+          scrollable: find.byType(Scrollable).first);
+      expect(find.text('Cancel Booking'), status == 'pending' ? findsOneWidget : findsNothing);
+      expect(find.text('Reschedule Session'), status == 'pending' ? findsOneWidget : findsNothing);
+      if (status == 'confirmed') {
+        expect(find.textContaining('Cancellation and rescheduling are now closed'), findsOneWidget);
+      }
+      expect(tester.takeException(), isNull);
+    });
+  }
 
   testWidgets('Student cannot open administrator dashboard', (tester) async {
     await tester.pumpWidget(const MaterialApp(home: AdminDashboardScreen()));

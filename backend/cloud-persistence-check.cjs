@@ -92,6 +92,17 @@ async function main() {
     assert.equal((await get(`bookings/${bookingId}`,tutor.idToken)).notes,'Persistent audit notes');
     await commit([[`bookings/${bookingId}`,{status:'confirmed'},['status']]],tutor.idToken);
     assert.equal((await get(`bookings/${bookingId}`,relogged.idToken)).status,'confirmed');
+    const nextId=prefix+'-replacement', next={...slot,start:new Date(start.getTime()+86400000),end:new Date(end.getTime()+86400000)};
+    await set(`availability/${nextId}`,next,tutor.idToken);
+    await assert.rejects(() => commit([[`bookings/${bookingId}`,{status:'cancelled'},['status']],
+      [`availability/${slotId}`,{bookingId:null},['bookingId']]],student.idToken),e=>e.status===403);
+    await assert.rejects(() => commit([[`bookings/${bookingId}`,{slotId:nextId,start:next.start,end:next.end,mode:next.mode,venue:next.venue,status:'pending',teamsUrl:null},['slotId','start','end','mode','venue','status','teamsUrl']],
+      [`availability/${slotId}`,{bookingId:null},['bookingId']],
+      [`availability/${nextId}`,{bookingId},['bookingId']]],student.idToken),e=>e.status===403);
+    assert.equal((await get(`bookings/${bookingId}`,student.idToken)).status,'confirmed');
+    assert.equal((await get(`availability/${slotId}`,student.idToken)).bookingId,bookingId);
+    assert.equal((await get(`availability/${nextId}`,student.idToken)).bookingId,null);
+    console.log('PASS accepted bookings reject tutee cancellation/rescheduling and preserve slot locks');
     console.log('PASS tutor profile, availability, favorites and shared booking persistence');
     const chatId=prefix+'-chat', messageId=prefix+'-message', notificationId=prefix+'-notification';
     await set(`chats/${chatId}`,{members:[s,t],names:{[s]:'Audit Updated Student',[t]:'Audit tutor'},bookingId:null,createdAt:new Date()},student.idToken);
@@ -115,7 +126,18 @@ async function main() {
     assert.equal((await get(`reports/${reportId}`,relogged.idToken)).evidence,null);
     await assert.rejects(get(`reports/${reportId}`,tutor.idToken),e=>e.status===403);
     console.log('PASS chat booking link, message, notification, review and private report readback');
-    await commit([[`bookings/${bookingId}`,{status:'cancelled'},['status']],[`availability/${slotId}`,{bookingId:null},['bookingId']]],student.idToken);
+    await commit([[`bookings/${bookingId}`,{status:'cancelled'},['status']],[`availability/${slotId}`,{bookingId:null},['bookingId']]],tutor.idToken);
+    const pendingId=prefix+'-pending-policy';
+    await commit([[`bookings/${pendingId}`,booking],
+      [`availability/${slotId}`,{bookingId:pendingId},['bookingId']]],student.idToken);
+    await commit([[`bookings/${pendingId}`,{slotId:nextId,start:next.start,end:next.end,mode:next.mode,venue:next.venue,status:'pending',teamsUrl:null},['slotId','start','end','mode','venue','status','teamsUrl']],
+      [`availability/${slotId}`,{bookingId:null},['bookingId']],
+      [`availability/${nextId}`,{bookingId:pendingId},['bookingId']]],student.idToken);
+    assert.equal((await get(`bookings/${pendingId}`,student.idToken)).slotId,nextId);
+    await commit([[`bookings/${pendingId}`,{status:'cancelled'},['status']],
+      [`availability/${nextId}`,{bookingId:null},['bookingId']]],student.idToken);
+    assert.equal((await get(`availability/${nextId}`,student.idToken)).bookingId,null);
+    console.log('PASS pending bookings still allow tutee rescheduling and cancellation');
     for(const [p,token] of [[favorite,student.idToken],[`reviews/${pastId}`,student.idToken],[`chats/${chatId}/messages/${messageId}`,student.idToken],
       [`notifications/${notificationId}`,tutor.idToken],[`availability/${slotId}`,tutor.idToken],[`tutorProfiles/${t}`,tutor.idToken]]) {
       await remove(p,token);await assert.rejects(get(p,token),e=>e.status===404 || e.status===403);

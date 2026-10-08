@@ -81,7 +81,10 @@ class BookingDetailsScreen extends StatelessWidget {
             AsyncPeerButton('Join Teams Meeting',
                 orange: true,
                 action: () => UploadService.openTeams(booking.teamsUrl)),
-          if (!tutor && booking.active)
+          if (!tutor && booking.status == 'confirmed')
+            const PeerCard(children: [Text(
+                'Your tutor has accepted this booking. Cancellation and rescheduling are now closed. Message your tutor if you need help.')]),
+          if (!tutor && booking.status == 'pending')
             AsyncPeerButton('Reschedule Session',
                 secondary: true,
                 icon: Icons.edit_calendar_outlined, action: () async {
@@ -103,7 +106,7 @@ class BookingDetailsScreen extends StatelessWidget {
                           ])));
               if (next != null) await repo.reschedule(booking, next);
             }),
-          if (booking.active)
+          if (booking.active && (tutor || booking.status == 'pending'))
             AsyncPeerButton('Cancel Booking',
                 secondary: true, icon: Icons.cancel_outlined, action: () async {
               final cancel = await showDialog<bool>(

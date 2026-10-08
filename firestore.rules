@@ -70,9 +70,10 @@ service cloud.firestore {
       allow update: if member(resource.data) && (
         request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status','updatedAt','teamsUrl']) && (
           request.resource.data.status == 'cancelled' && resource.data.status in ['pending','confirmed']
+            && (own(resource.data.tutorId) || resource.data.status == 'pending')
           || own(resource.data.tutorId) && resource.data.status == 'pending' && request.resource.data.status in ['confirmed','declined']
           || own(resource.data.tutorId) && resource.data.status == 'confirmed' && request.resource.data.status == 'completed' && resource.data.end <= request.time)
-        || own(resource.data.tuteeId) && resource.data.status in ['pending','confirmed'] && request.resource.data.status == 'pending'
+        || own(resource.data.tuteeId) && resource.data.status == 'pending' && request.resource.data.status == 'pending'
           && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['slotId','start','end','mode','venue','status','teamsUrl','updatedAt'])
           && request.resource.data.start > request.time && matchesSlot(request.resource.data));
       allow delete: if admin();
