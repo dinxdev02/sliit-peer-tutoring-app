@@ -15,7 +15,8 @@ void main() {
     data.loading = false;
     data.error = null;
     data.tutors = List.generate(3, (i) => PeerTutor('tutor-$i', {
-      'name': 'Tutor $i', 'year': 'Year 3', 'program': 'IT',
+      'name': i == 0 ? 'Demo Programming Tutor With A Longer Name' : 'Tutor $i',
+      'year': 'Year 3', 'program': 'Information Technology',
       'bio': 'Peer tutor', 'subjects': ['IT3060'], 'verified': true,
     }));
   });
@@ -47,6 +48,11 @@ void main() {
         await tester.pumpAndSettle();
         final state = tester.state<ScrollableState>(horizontal);
         expect(state.position.maxScrollExtent, greaterThan(0));
+        if (entry.key == 'mentor cards') {
+          final firstSize = tester.getSize(find.byKey(const ValueKey('mentor-card-tutor-0')));
+          expect(tester.getSize(find.byKey(const ValueKey('mentor-card-tutor-1'))), firstSize);
+          expect(tester.getSize(find.byKey(const ValueKey('mentor-card-tutor-2'))), firstSize);
+        }
         final before = state.position.pixels;
         await tester.drag(horizontal, const Offset(-160, 0), kind: kind);
         await tester.pumpAndSettle();

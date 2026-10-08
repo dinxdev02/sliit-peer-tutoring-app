@@ -10,7 +10,8 @@ import '../booking/tutor_management_dashboard_screen.dart';
 import '../booking/student_schedule_screen.dart';
 import '../messaging/notifications_screen.dart';
 import 'search_discovery_screen.dart';
-import 'tutor_profile_detail_screen.dart';
+
+import '../../widgets/mentor_carousel.dart';
 
 class HomeDashboardScreen extends StatelessWidget {
   const HomeDashboardScreen({super.key});
@@ -84,42 +85,7 @@ class HomeDashboardScreen extends StatelessWidget {
                         'No verified tutors are available yet. Approved tutor profiles will appear here.')
                   ]),
                 if (data.tutors.isNotEmpty)
-                  SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(children: [
-                        for (final tutor
-                            in data.tutors.where((t) => t.id != data.uid))
-                          SizedBox(
-                              width: 265,
-                              child: Padding(
-                                  padding: const EdgeInsets.only(right: 12),
-                                  child: PeerCard(children: [
-                                    PeerPerson(
-                                        name: tutor.name,
-                                        subtitle:
-                                            '${tutor.year} • ${tutor.program}'),
-                                    Text(data.rating(tutor.id) == 0
-                                        ? 'New Peer Mentor'
-                                        : '★ ${data.rating(tutor.id).toStringAsFixed(1)}'),
-                                    const SizedBox(height: 10),
-                                    Wrap(
-                                        spacing: 4,
-                                        runSpacing: 4,
-                                        children: tutor.modules
-                                            .take(2)
-                                            .map((m) => PeerBadge(m))
-                                            .toList()),
-                                    Text(
-                                        '${data.openSlots(tutor.id).length} open slots',
-                                        style: const TextStyle(
-                                            color: AppColors.textMuted)),
-                                    PeerButton('Connect Free',
-                                        onPressed: () => openPeerScreen(
-                                            context,
-                                            TutorProfileDetailScreen(
-                                                tutorId: tutor.id)))
-                                  ]))),
-                      ])),
+                  MentorCarousel(tutors: data.tutors.where((t) => t.id != data.uid).toList(), data: data),
                 PeerCard(color: peerTint, children: [
                   const PeerTitle('Your Peer Study Schedule',
                       icon: Icons.event),
