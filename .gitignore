@@ -10,6 +10,7 @@ build/
 
 # Android
 android/.gradle/
+android/.kotlin/
 android/app/debug/
 android/app/profile/
 android/app/release/
@@ -46,3 +47,20 @@ Thumbs.db
 # Environment / secrets
 .env
 *.env
+
+# Local tools, emulator data, and logs
+.tmp-tools/
+.tmp-pdf/
+.firebase/
+firebase-debug.log*
+firestore-debug.log*
+ui-debug.log*
+emulator-data/
+backend/node_modules/
+.firebase-runtime/
+
+# JVM crash reports
+hs_err_pid*.log
+replay_pid*.log
+**/hs_err_pid*.log
+**/replay_pid*.log

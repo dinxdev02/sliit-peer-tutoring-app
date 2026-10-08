@@ -25,6 +25,10 @@ See the project report, Section "Tech Stack Selection & Justification," for the 
 
 ## Setup Instructions
 
+Start with [Firebase access, registration and each member's CRUD demonstration](docs/firebase-and-crud-guide.md). For local data run `powershell -NoProfile -ExecutionPolicy Bypass -File backend/start-local.ps1`; for your hosted Firebase project follow that guide and run `backend/run-cloud.ps1`.
+
+The app now uses Firebase data. Follow [backend setup](docs/backend-setup.md) for the local emulators, synthetic accounts, cloud configuration and build commands. See [Milestone 03 requirements](docs/milestone-03-requirements.md) for assessment traceability and evidence still needed. The older quick-start below assumes cloud configuration; debug builds default to local emulators.
+
 ### Prerequisites
 - Flutter SDK (stable channel)
 - Android Studio or VS Code with Flutter extension
@@ -63,7 +67,7 @@ Output APK will be at `build/app/outputs/flutter-apk/app-release.apk`.
 - `sandavinna-messaging`
 
 ## Testing
-Functional test cases are documented in `/test` and in the project report's Traceability Matrix section. Usability testing results and the usability severity log are included in the final consolidated report.
+Automated checks are in `test/` and `backend/rules.test.cjs`. Backend tests require running Firebase emulators. Actual participant usability testing and the consolidated report remain group submission work.
 
 ## License
 Academic project — SLIIT IT3060 Human Computer Interaction, 2026.

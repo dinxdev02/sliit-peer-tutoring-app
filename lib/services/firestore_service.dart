@@ -9,8 +9,8 @@ import '../models/report_model.dart';
 import '../models/message_model.dart';
 import '../models/notification_model.dart';
 
-/// Shared Firestore CRUD helpers. Each member calls the methods relevant
-/// to their own module — see Milestone 03 Master Plan CRUD table.
+/// Legacy scaffold retained for the group's earlier model files.
+/// The live screens use AppData and BookingRepository with firestore.rules.
 class FirestoreService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
@@ -53,8 +53,9 @@ class FirestoreService {
         .collection('favorites')
         .where('tuteeId', isEqualTo: tuteeId)
         .snapshots()
-        .map((snap) =>
-            snap.docs.map((d) => FavoriteModel.fromMap(d.id, d.data())).toList());
+        .map((snap) => snap.docs
+            .map((d) => FavoriteModel.fromMap(d.id, d.data()))
+            .toList());
   }
 
   Future<void> removeFavorite(String favoriteId) =>
@@ -81,14 +82,16 @@ class FirestoreService {
   Future<void> createBooking(BookingModel booking) =>
       _db.collection('bookings').doc(booking.id).set(booking.toMap());
 
-  Stream<List<BookingModel>> getBookingsForUser(String userId, {bool asTutor = false}) {
+  Stream<List<BookingModel>> getBookingsForUser(String userId,
+      {bool asTutor = false}) {
     final field = asTutor ? 'tutorId' : 'tuteeId';
     return _db
         .collection('bookings')
         .where(field, isEqualTo: userId)
         .snapshots()
-        .map((snap) =>
-            snap.docs.map((d) => BookingModel.fromMap(d.id, d.data())).toList());
+        .map((snap) => snap.docs
+            .map((d) => BookingModel.fromMap(d.id, d.data()))
+            .toList());
   }
 
   Future<void> updateBookingStatus(String id, String status) =>
@@ -124,8 +127,9 @@ class FirestoreService {
         .where('chatId', isEqualTo: chatId)
         .orderBy('timestamp')
         .snapshots()
-        .map((snap) =>
-            snap.docs.map((d) => MessageModel.fromMap(d.id, d.data())).toList());
+        .map((snap) => snap.docs
+            .map((d) => MessageModel.fromMap(d.id, d.data()))
+            .toList());
   }
 
   Future<void> deleteMessage(String id) =>

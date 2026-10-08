@@ -1,0 +1,6 @@
+{
+  "name": "sliit-peer-backend-tools",
+  "private": true,
+  "scripts": { "seed": "node seed.cjs", "test": "node --test rules.test.cjs", "approve": "node approve.cjs" },
+  "description": "Dependency-free local Firebase emulator seed, approval and REST integration tests"
+}

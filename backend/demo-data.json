@@ -1,0 +1,538 @@
+{
+  "project": "sliit-peer-tutoring",
+  "synthetic": true,
+  "records": [
+    {
+      "document": "users/lIScrij0vRU9YcptDStpVuVozy52",
+      "data": {
+        "name": "Demo Student",
+        "email": "codex-demo-student@my.sliit.lk",
+        "role": "tutee",
+        "year": "Year 2",
+        "program": "Information Technology",
+        "verificationStatus": "approved",
+        "verificationEvidence": null,
+        "guidelinesAccepted": true,
+        "createdAt": "2026-10-07T10:29:26.363Z"
+      }
+    },
+    {
+      "document": "users/M23GGuWwykcHaUTMnzdypfsxGJz1",
+      "data": {
+        "name": "Demo HCI Tutor",
+        "email": "codex-demo-hci@my.sliit.lk",
+        "role": "tutor",
+        "year": "Year 3",
+        "program": "Information Technology",
+        "verificationStatus": "approved",
+        "verificationEvidence": null,
+        "guidelinesAccepted": true,
+        "createdAt": "2026-10-07T10:29:26.363Z"
+      }
+    },
+    {
+      "document": "tutorProfiles/M23GGuWwykcHaUTMnzdypfsxGJz1",
+      "data": {
+        "userId": "M23GGuWwykcHaUTMnzdypfsxGJz1",
+        "name": "Demo HCI Tutor",
+        "year": "Year 3",
+        "program": "Information Technology",
+        "subjects": [
+          "IT3060",
+          "IT2080"
+        ],
+        "bio": "Synthetic demonstration profile for the assignment. This is not a real student or enrollment approval.",
+        "verified": true
+      }
+    },
+    {
+      "document": "users/B1aqu9OIIfN68v98w5tCGP35onr1",
+      "data": {
+        "name": "Demo Programming Tutor",
+        "email": "codex-demo-programming@my.sliit.lk",
+        "role": "tutor",
+        "year": "Year 3",
+        "program": "Information Technology",
+        "verificationStatus": "approved",
+        "verificationEvidence": null,
+        "guidelinesAccepted": true,
+        "createdAt": "2026-10-07T10:29:26.363Z"
+      }
+    },
+    {
+      "document": "tutorProfiles/B1aqu9OIIfN68v98w5tCGP35onr1",
+      "data": {
+        "userId": "B1aqu9OIIfN68v98w5tCGP35onr1",
+        "name": "Demo Programming Tutor",
+        "year": "Year 3",
+        "program": "Information Technology",
+        "subjects": [
+          "IT1010",
+          "IT2030"
+        ],
+        "bio": "Synthetic demonstration profile for the assignment. This is not a real student or enrollment approval.",
+        "verified": true
+      }
+    },
+    {
+      "document": "users/kBcL1A4kAaQqHdWtYCr3j4cbZcW2",
+      "data": {
+        "name": "Demo Networks Tutor",
+        "email": "codex-demo-networks@my.sliit.lk",
+        "role": "tutor",
+        "year": "Year 3",
+        "program": "Information Technology",
+        "verificationStatus": "approved",
+        "verificationEvidence": null,
+        "guidelinesAccepted": true,
+        "createdAt": "2026-10-07T10:29:26.363Z"
+      }
+    },
+    {
+      "document": "tutorProfiles/kBcL1A4kAaQqHdWtYCr3j4cbZcW2",
+      "data": {
+        "userId": "kBcL1A4kAaQqHdWtYCr3j4cbZcW2",
+        "name": "Demo Networks Tutor",
+        "year": "Year 3",
+        "program": "Information Technology",
+        "subjects": [
+          "IT3040",
+          "IT2050"
+        ],
+        "bio": "Synthetic demonstration profile for the assignment. This is not a real student or enrollment approval.",
+        "verified": true
+      }
+    },
+    {
+      "document": "users/sHFyGGgNFZPb5A5DqCuNDbgGJVr1",
+      "data": {
+        "name": "Demo Pending Tutor",
+        "email": "codex-demo-pending@my.sliit.lk",
+        "role": "tutor",
+        "year": "Year 3",
+        "program": "Information Technology",
+        "verificationStatus": "pending",
+        "verificationEvidence": null,
+        "guidelinesAccepted": true,
+        "createdAt": "2026-10-07T10:29:26.363Z"
+      }
+    },
+    {
+      "document": "tutorProfiles/sHFyGGgNFZPb5A5DqCuNDbgGJVr1",
+      "data": {
+        "userId": "sHFyGGgNFZPb5A5DqCuNDbgGJVr1",
+        "name": "Demo Pending Tutor",
+        "year": "Year 3",
+        "program": "Information Technology",
+        "subjects": [
+          "IT3060"
+        ],
+        "bio": "Synthetic demonstration profile for the assignment. This is not a real student or enrollment approval.",
+        "verified": false
+      }
+    },
+    {
+      "document": "availability/M23GGuWwykcHaUTMnzdypfsxGJz1_1791451800000",
+      "data": {
+        "tutorId": "M23GGuWwykcHaUTMnzdypfsxGJz1",
+        "start": "2026-10-08T09:30:00.000Z",
+        "end": "2026-10-08T11:00:00.000Z",
+        "available": true,
+        "bookingId": "codex-demo-pending",
+        "mode": "Campus",
+        "venue": "Demo campus discussion room"
+      }
+    },
+    {
+      "document": "availability/M23GGuWwykcHaUTMnzdypfsxGJz1_1791538200000",
+      "data": {
+        "tutorId": "M23GGuWwykcHaUTMnzdypfsxGJz1",
+        "start": "2026-10-09T09:30:00.000Z",
+        "end": "2026-10-09T11:00:00.000Z",
+        "available": true,
+        "bookingId": "codex-demo-confirmed",
+        "mode": "Online",
+        "venue": "Microsoft Teams"
+      }
+    },
+    {
+      "document": "availability/M23GGuWwykcHaUTMnzdypfsxGJz1_1791624600000",
+      "data": {
+        "tutorId": "M23GGuWwykcHaUTMnzdypfsxGJz1",
+        "start": "2026-10-10T09:30:00.000Z",
+        "end": "2026-10-10T11:00:00.000Z",
+        "available": true,
+        "bookingId": null,
+        "mode": "Campus",
+        "venue": "Demo campus discussion room"
+      }
+    },
+    {
+      "document": "availability/M23GGuWwykcHaUTMnzdypfsxGJz1_1791711000000",
+      "data": {
+        "tutorId": "M23GGuWwykcHaUTMnzdypfsxGJz1",
+        "start": "2026-10-11T09:30:00.000Z",
+        "end": "2026-10-11T11:00:00.000Z",
+        "available": true,
+        "bookingId": null,
+        "mode": "Online",
+        "venue": "Microsoft Teams"
+      }
+    },
+    {
+      "document": "availability/M23GGuWwykcHaUTMnzdypfsxGJz1_1791797400000",
+      "data": {
+        "tutorId": "M23GGuWwykcHaUTMnzdypfsxGJz1",
+        "start": "2026-10-12T09:30:00.000Z",
+        "end": "2026-10-12T11:00:00.000Z",
+        "available": true,
+        "bookingId": null,
+        "mode": "Campus",
+        "venue": "Demo campus discussion room"
+      }
+    },
+    {
+      "document": "availability/M23GGuWwykcHaUTMnzdypfsxGJz1_1791883800000",
+      "data": {
+        "tutorId": "M23GGuWwykcHaUTMnzdypfsxGJz1",
+        "start": "2026-10-13T09:30:00.000Z",
+        "end": "2026-10-13T11:00:00.000Z",
+        "available": true,
+        "bookingId": null,
+        "mode": "Online",
+        "venue": "Microsoft Teams"
+      }
+    },
+    {
+      "document": "availability/M23GGuWwykcHaUTMnzdypfsxGJz1_1791970200000",
+      "data": {
+        "tutorId": "M23GGuWwykcHaUTMnzdypfsxGJz1",
+        "start": "2026-10-14T09:30:00.000Z",
+        "end": "2026-10-14T11:00:00.000Z",
+        "available": true,
+        "bookingId": null,
+        "mode": "Campus",
+        "venue": "Demo campus discussion room"
+      }
+    },
+    {
+      "document": "availability/B1aqu9OIIfN68v98w5tCGP35onr1_1791451800000",
+      "data": {
+        "tutorId": "B1aqu9OIIfN68v98w5tCGP35onr1",
+        "start": "2026-10-08T09:30:00.000Z",
+        "end": "2026-10-08T11:00:00.000Z",
+        "available": true,
+        "bookingId": null,
+        "mode": "Campus",
+        "venue": "Demo campus discussion room"
+      }
+    },
+    {
+      "document": "availability/B1aqu9OIIfN68v98w5tCGP35onr1_1791538200000",
+      "data": {
+        "tutorId": "B1aqu9OIIfN68v98w5tCGP35onr1",
+        "start": "2026-10-09T09:30:00.000Z",
+        "end": "2026-10-09T11:00:00.000Z",
+        "available": true,
+        "bookingId": null,
+        "mode": "Online",
+        "venue": "Microsoft Teams"
+      }
+    },
+    {
+      "document": "availability/B1aqu9OIIfN68v98w5tCGP35onr1_1791624600000",
+      "data": {
+        "tutorId": "B1aqu9OIIfN68v98w5tCGP35onr1",
+        "start": "2026-10-10T09:30:00.000Z",
+        "end": "2026-10-10T11:00:00.000Z",
+        "available": true,
+        "bookingId": null,
+        "mode": "Campus",
+        "venue": "Demo campus discussion room"
+      }
+    },
+    {
+      "document": "availability/B1aqu9OIIfN68v98w5tCGP35onr1_1791711000000",
+      "data": {
+        "tutorId": "B1aqu9OIIfN68v98w5tCGP35onr1",
+        "start": "2026-10-11T09:30:00.000Z",
+        "end": "2026-10-11T11:00:00.000Z",
+        "available": true,
+        "bookingId": null,
+        "mode": "Online",
+        "venue": "Microsoft Teams"
+      }
+    },
+    {
+      "document": "availability/B1aqu9OIIfN68v98w5tCGP35onr1_1791797400000",
+      "data": {
+        "tutorId": "B1aqu9OIIfN68v98w5tCGP35onr1",
+        "start": "2026-10-12T09:30:00.000Z",
+        "end": "2026-10-12T11:00:00.000Z",
+        "available": true,
+        "bookingId": null,
+        "mode": "Campus",
+        "venue": "Demo campus discussion room"
+      }
+    },
+    {
+      "document": "availability/B1aqu9OIIfN68v98w5tCGP35onr1_1791883800000",
+      "data": {
+        "tutorId": "B1aqu9OIIfN68v98w5tCGP35onr1",
+        "start": "2026-10-13T09:30:00.000Z",
+        "end": "2026-10-13T11:00:00.000Z",
+        "available": true,
+        "bookingId": null,
+        "mode": "Online",
+        "venue": "Microsoft Teams"
+      }
+    },
+    {
+      "document": "availability/B1aqu9OIIfN68v98w5tCGP35onr1_1791970200000",
+      "data": {
+        "tutorId": "B1aqu9OIIfN68v98w5tCGP35onr1",
+        "start": "2026-10-14T09:30:00.000Z",
+        "end": "2026-10-14T11:00:00.000Z",
+        "available": true,
+        "bookingId": null,
+        "mode": "Campus",
+        "venue": "Demo campus discussion room"
+      }
+    },
+    {
+      "document": "availability/kBcL1A4kAaQqHdWtYCr3j4cbZcW2_1791451800000",
+      "data": {
+        "tutorId": "kBcL1A4kAaQqHdWtYCr3j4cbZcW2",
+        "start": "2026-10-08T09:30:00.000Z",
+        "end": "2026-10-08T11:00:00.000Z",
+        "available": true,
+        "bookingId": null,
+        "mode": "Campus",
+        "venue": "Demo campus discussion room"
+      }
+    },
+    {
+      "document": "availability/kBcL1A4kAaQqHdWtYCr3j4cbZcW2_1791538200000",
+      "data": {
+        "tutorId": "kBcL1A4kAaQqHdWtYCr3j4cbZcW2",
+        "start": "2026-10-09T09:30:00.000Z",
+        "end": "2026-10-09T11:00:00.000Z",
+        "available": true,
+        "bookingId": null,
+        "mode": "Online",
+        "venue": "Microsoft Teams"
+      }
+    },
+    {
+      "document": "availability/kBcL1A4kAaQqHdWtYCr3j4cbZcW2_1791624600000",
+      "data": {
+        "tutorId": "kBcL1A4kAaQqHdWtYCr3j4cbZcW2",
+        "start": "2026-10-10T09:30:00.000Z",
+        "end": "2026-10-10T11:00:00.000Z",
+        "available": true,
+        "bookingId": null,
+        "mode": "Campus",
+        "venue": "Demo campus discussion room"
+      }
+    },
+    {
+      "document": "availability/kBcL1A4kAaQqHdWtYCr3j4cbZcW2_1791711000000",
+      "data": {
+        "tutorId": "kBcL1A4kAaQqHdWtYCr3j4cbZcW2",
+        "start": "2026-10-11T09:30:00.000Z",
+        "end": "2026-10-11T11:00:00.000Z",
+        "available": true,
+        "bookingId": null,
+        "mode": "Online",
+        "venue": "Microsoft Teams"
+      }
+    },
+    {
+      "document": "availability/kBcL1A4kAaQqHdWtYCr3j4cbZcW2_1791797400000",
+      "data": {
+        "tutorId": "kBcL1A4kAaQqHdWtYCr3j4cbZcW2",
+        "start": "2026-10-12T09:30:00.000Z",
+        "end": "2026-10-12T11:00:00.000Z",
+        "available": true,
+        "bookingId": null,
+        "mode": "Campus",
+        "venue": "Demo campus discussion room"
+      }
+    },
+    {
+      "document": "availability/kBcL1A4kAaQqHdWtYCr3j4cbZcW2_1791883800000",
+      "data": {
+        "tutorId": "kBcL1A4kAaQqHdWtYCr3j4cbZcW2",
+        "start": "2026-10-13T09:30:00.000Z",
+        "end": "2026-10-13T11:00:00.000Z",
+        "available": true,
+        "bookingId": null,
+        "mode": "Online",
+        "venue": "Microsoft Teams"
+      }
+    },
+    {
+      "document": "availability/kBcL1A4kAaQqHdWtYCr3j4cbZcW2_1791970200000",
+      "data": {
+        "tutorId": "kBcL1A4kAaQqHdWtYCr3j4cbZcW2",
+        "start": "2026-10-14T09:30:00.000Z",
+        "end": "2026-10-14T11:00:00.000Z",
+        "available": true,
+        "bookingId": null,
+        "mode": "Campus",
+        "venue": "Demo campus discussion room"
+      }
+    },
+    {
+      "document": "bookings/codex-demo-pending",
+      "data": {
+        "tutorId": "M23GGuWwykcHaUTMnzdypfsxGJz1",
+        "tuteeId": "lIScrij0vRU9YcptDStpVuVozy52",
+        "participants": [
+          "M23GGuWwykcHaUTMnzdypfsxGJz1",
+          "lIScrij0vRU9YcptDStpVuVozy52"
+        ],
+        "tutorName": "Demo HCI Tutor",
+        "tuteeName": "Demo Student",
+        "module": "IT3060",
+        "slotId": "M23GGuWwykcHaUTMnzdypfsxGJz1_1791451800000",
+        "start": "2026-10-08T09:30:00.000Z",
+        "end": "2026-10-08T11:00:00.000Z",
+        "mode": "Campus",
+        "venue": "Demo campus discussion room",
+        "notes": "Synthetic HCI concept revision session.",
+        "teamsUrl": null,
+        "status": "pending",
+        "createdAt": "2026-10-07T10:29:26.363Z"
+      }
+    },
+    {
+      "document": "bookings/codex-demo-confirmed",
+      "data": {
+        "tutorId": "M23GGuWwykcHaUTMnzdypfsxGJz1",
+        "tuteeId": "lIScrij0vRU9YcptDStpVuVozy52",
+        "participants": [
+          "M23GGuWwykcHaUTMnzdypfsxGJz1",
+          "lIScrij0vRU9YcptDStpVuVozy52"
+        ],
+        "tutorName": "Demo HCI Tutor",
+        "tuteeName": "Demo Student",
+        "module": "IT3060",
+        "slotId": "M23GGuWwykcHaUTMnzdypfsxGJz1_1791538200000",
+        "start": "2026-10-09T09:30:00.000Z",
+        "end": "2026-10-09T11:00:00.000Z",
+        "mode": "Online",
+        "venue": "Microsoft Teams",
+        "notes": "Synthetic HCI concept revision session.",
+        "teamsUrl": null,
+        "status": "confirmed",
+        "createdAt": "2026-10-07T10:29:26.363Z"
+      }
+    },
+    {
+      "document": "availability/M23GGuWwykcHaUTMnzdypfsxGJz1_1791196166363",
+      "data": {
+        "tutorId": "M23GGuWwykcHaUTMnzdypfsxGJz1",
+        "start": "2026-10-05T10:29:26.363Z",
+        "end": "2026-10-05T11:59:26.363Z",
+        "mode": "Campus",
+        "venue": "Demo campus discussion room",
+        "available": true,
+        "bookingId": null
+      }
+    },
+    {
+      "document": "bookings/codex-demo-completed",
+      "data": {
+        "tutorId": "M23GGuWwykcHaUTMnzdypfsxGJz1",
+        "tuteeId": "lIScrij0vRU9YcptDStpVuVozy52",
+        "participants": [
+          "M23GGuWwykcHaUTMnzdypfsxGJz1",
+          "lIScrij0vRU9YcptDStpVuVozy52"
+        ],
+        "tutorName": "Demo HCI Tutor",
+        "tuteeName": "Demo Student",
+        "module": "IT3060",
+        "slotId": "M23GGuWwykcHaUTMnzdypfsxGJz1_1791196166363",
+        "start": "2026-10-05T10:29:26.363Z",
+        "end": "2026-10-05T11:59:26.363Z",
+        "mode": "Campus",
+        "venue": "Demo campus discussion room",
+        "notes": "Synthetic HCI concept revision session.",
+        "teamsUrl": null,
+        "status": "completed",
+        "createdAt": "2026-10-07T10:29:26.363Z"
+      }
+    },
+    {
+      "document": "reviews/codex-demo-completed",
+      "data": {
+        "bookingId": "codex-demo-completed",
+        "tutorId": "M23GGuWwykcHaUTMnzdypfsxGJz1",
+        "tuteeId": "lIScrij0vRU9YcptDStpVuVozy52",
+        "author": "Demo Student",
+        "rating": 5,
+        "comment": "Demo review: clear explanations of usability heuristics.",
+        "tags": [],
+        "createdAt": "2026-10-07T10:29:26.363Z"
+      }
+    },
+    {
+      "document": "users/lIScrij0vRU9YcptDStpVuVozy52/favorites/M23GGuWwykcHaUTMnzdypfsxGJz1",
+      "data": {
+        "tutorId": "M23GGuWwykcHaUTMnzdypfsxGJz1",
+        "note": "Demo note: revise HCI concepts.",
+        "createdAt": "2026-10-07T10:29:26.363Z"
+      }
+    },
+    {
+      "document": "chats/M23GGuWwykcHaUTMnzdypfsxGJz1_lIScrij0vRU9YcptDStpVuVozy52",
+      "data": {
+        "members": [
+          "M23GGuWwykcHaUTMnzdypfsxGJz1",
+          "lIScrij0vRU9YcptDStpVuVozy52"
+        ],
+        "names": {
+          "lIScrij0vRU9YcptDStpVuVozy52": "Demo Student",
+          "M23GGuWwykcHaUTMnzdypfsxGJz1": "Demo HCI Tutor"
+        },
+        "bookingId": "codex-demo-completed",
+        "createdAt": "2026-10-07T10:29:26.363Z"
+      }
+    },
+    {
+      "document": "chats/M23GGuWwykcHaUTMnzdypfsxGJz1_lIScrij0vRU9YcptDStpVuVozy52/messages/codex-demo-message",
+      "data": {
+        "senderId": "lIScrij0vRU9YcptDStpVuVozy52",
+        "text": "Demo message: can we revise usability heuristics?",
+        "attachment": null,
+        "createdAt": "2026-10-07T10:29:26.363Z"
+      }
+    },
+    {
+      "document": "notifications/codex-demo-confirmed",
+      "data": {
+        "userId": "lIScrij0vRU9YcptDStpVuVozy52",
+        "actorId": "M23GGuWwykcHaUTMnzdypfsxGJz1",
+        "type": "booking",
+        "bookingId": "codex-demo-confirmed",
+        "chatId": null,
+        "message": "Demo session confirmation.",
+        "read": false,
+        "createdAt": "2026-10-07T10:29:26.363Z"
+      }
+    },
+    {
+      "document": "reports/codex-demo-report",
+      "data": {
+        "bookingId": "codex-demo-completed",
+        "reporterId": "lIScrij0vRU9YcptDStpVuVozy52",
+        "reason": "Other",
+        "details": "Synthetic confidential report for demonstrating report access. No real incident is alleged.",
+        "evidence": null,
+        "status": "submitted",
+        "createdAt": "2026-10-07T10:29:26.363Z"
+      }
+    }
+  ]
+}

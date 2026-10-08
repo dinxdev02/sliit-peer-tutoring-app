@@ -1,0 +1,24 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    function validFile() { return request.resource.size > 0 && request.resource.size <= 5 * 1024 * 1024
+      && request.resource.contentType.matches('image/(png|jpeg)|application/pdf'); }
+    function admin() { return request.auth != null && request.auth.token.admin == true; }
+    match /verification/{uid}/{file} {
+      allow read: if request.auth != null && request.auth.uid == uid || admin();
+      allow create, update: if request.auth != null && request.auth.uid == uid && validFile();
+      allow delete: if request.auth != null && request.auth.uid == uid || admin();
+    }
+    match /reports/{uid}/{file} {
+      allow read: if request.auth != null && request.auth.uid == uid || admin();
+      allow create: if request.auth != null && request.auth.uid == uid && validFile();
+      allow update, delete: if admin();
+    }
+    match /chats/{chatId}/{file} {
+      function member() { return request.auth != null && request.auth.uid in firestore.get(/databases/(default)/documents/chats/$(chatId)).data.members; }
+      allow read: if member();
+      allow create: if member() && validFile();
+      allow update, delete: if false;
+    }
+  }
+}
