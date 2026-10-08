@@ -2,6 +2,8 @@
 
 ## Recorded checks
 
+On 8 October 2026, app-wide mouse dragging was enabled alongside touch scrolling. All 38 Flutter tests passed, including eight gesture checks covering mouse and touch movement of mentor cards, the availability calendar, booking tabs and notification tabs at a 320px phone width. Flutter analysis reported no issues.
+
 On 8 October 2026, accepted bookings were locked against tutee cancellation and rescheduling in the UI, repository transactions and deployed Firestore rules. All 30 Flutter tests passed and analysis reported no issues. The cloud audit confirmed both forbidden actions preserve slot locks, pending requests still allow rescheduling/cancellation, and tutors can still cancel accepted bookings. Temporary audit records and accounts were cleaned up.
 
 On 8 October 2026, the administrator dashboard changes passed 28 Flutter tests and analysis. The live cloud audit verified Firebase admin login, rejection/approval persistence and denied student administrator access. See docs/admin-dashboard.md for the demo credentials and scope.

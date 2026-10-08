@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import 'widgets/session_home.dart';
 import 'services/backend_config.dart';
 import 'services/app_data.dart';
@@ -39,6 +40,7 @@ class SliitPeerApp extends StatelessWidget {
     return MaterialApp(
       title: 'SLIIT Peer',
       debugShowCheckedModeBanner: false,
+      scrollBehavior: const PeerScrollBehavior(),
       theme: ThemeData(
         scaffoldBackgroundColor: const Color(0xFFF8FAFC),
         primaryColor: const Color(0xFF1E3A8A), // deep blue
@@ -53,4 +55,15 @@ class SliitPeerApp extends StatelessWidget {
       home: const SessionHome(),
     );
   }
+}
+
+/// Support mouse dragging in the emulator alongside mobile touch gestures.
+class PeerScrollBehavior extends MaterialScrollBehavior {
+  const PeerScrollBehavior();
+
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        ...super.dragDevices,
+        PointerDeviceKind.mouse,
+      };
 }
