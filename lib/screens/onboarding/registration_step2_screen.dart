@@ -15,6 +15,7 @@ class RegistrationStep2Screen extends StatefulWidget {
   final String fullName;
   final String email;
   final String password;
+  final bool pledgeAccepted;
 
   const RegistrationStep2Screen({
     super.key,
@@ -22,6 +23,7 @@ class RegistrationStep2Screen extends StatefulWidget {
     this.fullName = '',
     this.email = '',
     this.password = '',
+    this.pledgeAccepted = false,
   });
 
   @override
@@ -38,6 +40,7 @@ class _RegistrationStep2ScreenState extends State<RegistrationStep2Screen> {
   String _program = 'Information Technology';
   late final _name = TextEditingController(text: widget.fullName);
   late String _role = widget.role == 'tutor' ? 'tutor' : 'tutee';
+  late bool _pledgeAccepted = widget.pledgeAccepted;
 
   @override
   void dispose() {
@@ -75,6 +78,7 @@ class _RegistrationStep2ScreenState extends State<RegistrationStep2Screen> {
           role: _role,
           year: _year,
           program: _program,
+          pledgeAccepted: _pledgeAccepted,
           evidence: BackendConfig.uploadsEnabled ? _evidence : null);
     });
     if (!mounted) return;
@@ -632,6 +636,16 @@ class _RegistrationStep2ScreenState extends State<RegistrationStep2Screen> {
               ],
               const SizedBox(height: 22),
 
+              CheckboxListTile(
+                contentPadding: EdgeInsets.zero,
+                value: _pledgeAccepted,
+                onChanged: _saving
+                    ? null
+                    : (value) =>
+                        setState(() => _pledgeAccepted = value ?? false),
+                title: const Text(
+                    'I pledge to uphold academic integrity and complete my own graded work.'),
+              ),
               // Bottom Navigation Buttons
               Row(
                 children: [

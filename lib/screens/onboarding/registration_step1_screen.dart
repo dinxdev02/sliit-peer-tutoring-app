@@ -67,6 +67,7 @@ class _RegistrationStep1ScreenState extends State<RegistrationStep1Screen> {
           fullName: _nameController.text.trim(),
           email: _emailController.text.trim(),
           password: _passwordController.text,
+          pledgeAccepted: _agreedToPledge,
         ),
       ),
     );

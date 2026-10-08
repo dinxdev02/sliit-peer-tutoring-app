@@ -18,6 +18,7 @@ class _AvailabilityCalendarScreenState
       DateTime.now().subtract(Duration(days: DateTime.now().weekday - 1));
   Set<int> selected = {};
   bool dirty = false;
+  bool settingsLoaded = false;
   String mode = 'Campus';
   final venue = TextEditingController(text: 'SLIIT Malabe Library');
   static const hours = [8, 10, 13, 15, 17];
@@ -30,6 +31,7 @@ class _AvailabilityCalendarScreenState
   void changeWeek(int direction) => setState(() {
         week = week.add(Duration(days: direction * 7));
         dirty = false;
+        settingsLoaded = false;
         selected = {};
       });
   @override
@@ -51,6 +53,12 @@ class _AvailabilityCalendarScreenState
           }
         }
         if (!dirty) selected = existing.keys.toSet();
+        if (!dirty && !settingsLoaded && existing.isNotEmpty) {
+          final saved = existing.values.first;
+          mode = saved.mode;
+          venue.text = saved.venue;
+          settingsLoaded = true;
+        }
         return PeerPage(title: 'Tutor Availability Calendar', children: [
           PeerCard(children: [
             PeerPerson(
@@ -161,6 +169,7 @@ class _AvailabilityCalendarScreenState
             const PeerTitle('Designated Study Spots',
                 icon: Icons.location_on_outlined),
             DropdownButtonFormField<String>(
+                key: ValueKey('${week.millisecondsSinceEpoch}_$mode'),
                 initialValue: mode,
                 decoration: const InputDecoration(labelText: 'Study mode'),
                 items: ['Campus', 'Online']
@@ -168,9 +177,11 @@ class _AvailabilityCalendarScreenState
                     .toList(),
                 onChanged: (v) => setState(() {
                       mode = v!;
+                      dirty = true;
                     })),
             TextField(
                 controller: venue,
+                onChanged: (_) => setState(() => dirty = true),
                 decoration:
                     const InputDecoration(labelText: 'Study venue / room'))
           ]),

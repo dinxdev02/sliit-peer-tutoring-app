@@ -21,9 +21,10 @@ test('FR1: registration can create a pending profile without an ID upload',async
   try {
     await remove(path,'owner');
     await set(path, {name:'Registration Test',email:registered.email,role:'tutee',year:'Year 1',program:'Information Technology',
-      verificationStatus:'pending',verificationEvidence:null,guidelinesAccepted:false,createdAt:new Date()},registered.idToken);
+      verificationStatus:'pending',verificationEvidence:null,guidelinesAccepted:false,pledgeAccepted:true,pledgeAcceptedAt:new Date(),createdAt:new Date()},registered.idToken);
     assert.equal((await get(path,registered.idToken)).verificationEvidence,null);
     assert.equal((await get(path,registered.idToken)).verificationStatus,'pending');
+    assert.equal((await get(path,registered.idToken)).pledgeAccepted,true);
   } finally {
     await remove(path,'owner');
   }
@@ -110,8 +111,11 @@ test('FR4: reviews require completed sessions and support own update/delete',asy
   await remove('reviews/demo-completed',users.student.idToken);
 });
 test('FR4 / privacy: only chat members can read or send messages',async()=>{
-  const chat={members:[users.student.localId,users.tutor.localId],names:{[users.student.localId]:'Demo Student',[users.tutor.localId]:'Demo Peer Tutor'},bookingId:'demo-completed',createdAt:new Date()};
+  const chat={members:[users.student.localId,users.tutor.localId],names:{[users.student.localId]:'Demo Student',[users.tutor.localId]:'Demo Peer Tutor'},bookingId:null,createdAt:new Date()};
   await set('chats/test-chat',chat,users.student.idToken);
+  await commit([write('chats/test-chat',{bookingId:'demo-completed'},['bookingId'])],users.student.idToken);
+  assert.equal((await get('chats/test-chat',users.tutor.idToken)).bookingId,'demo-completed');
+  await assert.rejects(commit([write('chats/test-chat',{bookingId:'missing-booking'},['bookingId'])],users.student.idToken));
   const message={senderId:users.student.localId,text:'Can we discuss the rubric?',attachment:null,createdAt:new Date()};
   await set('chats/test-chat/messages/test-message',message,users.student.idToken);
   assert.equal((await get('chats/test-chat/messages/test-message',users.tutor.idToken)).text,message.text);

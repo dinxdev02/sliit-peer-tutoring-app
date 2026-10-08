@@ -42,7 +42,11 @@ class AuthService {
       required String role,
       required String year,
       required String program,
+      required bool pledgeAccepted,
       PlatformFile? evidence}) async {
+    if (!pledgeAccepted) {
+      throw StateError('Please accept the academic integrity pledge.');
+    }
     if (!validEmail(email) || name.trim().length < 2) {
       throw StateError(
           'Enter a name, SLIIT email and password of at least 6 characters.');
@@ -65,16 +69,23 @@ class AuthService {
     final upload = evidence == null
         ? null
         : await UploadService.upload(evidence, 'verification/${user.uid}');
-    await doc.set({
-      'name': name.trim(),
-      'email': email.trim().toLowerCase(),
-      'role': role == 'tutor' ? 'tutor' : 'tutee',
-      'year': year,
-      'program': program,
-      'verificationStatus': 'pending',
-      'verificationEvidence': upload,
-      'guidelinesAccepted': false,
-      'createdAt': FieldValue.serverTimestamp()
+    await FirebaseFirestore.instance.runTransaction((transaction) async {
+      if ((await transaction.get(doc)).exists) {
+        throw StateError('This account already has a profile. Please sign in.');
+      }
+      transaction.set(doc, {
+        'name': name.trim(),
+        'email': email.trim().toLowerCase(),
+        'role': role == 'tutor' ? 'tutor' : 'tutee',
+        'year': year,
+        'program': program,
+        'verificationStatus': 'pending',
+        'verificationEvidence': upload,
+        'guidelinesAccepted': false,
+        'pledgeAccepted': true,
+        'pledgeAcceptedAt': FieldValue.serverTimestamp(),
+        'createdAt': FieldValue.serverTimestamp()
+      });
     });
   }
 

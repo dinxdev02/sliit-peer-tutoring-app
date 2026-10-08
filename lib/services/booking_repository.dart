@@ -205,15 +205,20 @@ class BookingRepository {
         comment.length > 300) {
       throw StateError('Only the student can review a completed session.');
     }
-    await db.collection('reviews').doc(booking.id).set({
-      'bookingId': booking.id,
-      'tutorId': booking.tutorId,
-      'tuteeId': data.uid,
-      'author': data.name,
-      'rating': rating,
-      'comment': comment.trim(),
-      'tags': tags.toList(),
-      'createdAt': FieldValue.serverTimestamp()
+    final ref = db.collection('reviews').doc(booking.id);
+    await db.runTransaction((transaction) async {
+      final existing = await transaction.get(ref);
+      transaction.set(ref, {
+        'bookingId': booking.id,
+        'tutorId': booking.tutorId,
+        'tuteeId': data.uid,
+        'author': data.name,
+        'rating': rating,
+        'comment': comment.trim(),
+        'tags': tags.toList(),
+        'createdAt':
+            existing.data()?['createdAt'] ?? FieldValue.serverTimestamp()
+      });
     });
   }
 

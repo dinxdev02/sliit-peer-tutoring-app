@@ -270,6 +270,8 @@ class AppData extends ChangeNotifier {
           'bookingId': bookingId,
           'createdAt': FieldValue.serverTimestamp()
         });
+      } else if (bookingId != null && doc.data()?['bookingId'] != bookingId) {
+        tx.update(ref, {'bookingId': bookingId});
       }
     });
     return id;

@@ -2,6 +2,8 @@
 
 ## Recorded checks
 
+On 8 October 2026, 27 Flutter tests passed with uploads disabled and analysis reported no issues. The authenticated cloud persistence audit passed and cleaned up its temporary accounts/documents. See `docs/persistence-audit.md` for the tested operations, fixes and limits.
+
 - `flutter test --no-pub`: 26 widget tests passed on 7 October 2026. Twenty check empty-state screens at 320px and 390px width; the others cover onboarding rendering, filter reset, stored request identity/status, blocking reviews of pending sessions, interrupted registration recovery and missing tutor-profile recovery. These are automated UI checks, not usability sessions.
 - `flutter analyze --no-pub`: no issues found during the implementation. Rerun after changing source.
 - Backend rule tests and authenticated device workflows require running Firebase emulators. Their source exists, but a passing result must be recorded only after execution.
