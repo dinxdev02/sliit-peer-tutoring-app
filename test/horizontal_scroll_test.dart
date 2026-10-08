@@ -51,6 +51,19 @@ void main() {
         await tester.drag(horizontal, const Offset(-160, 0), kind: kind);
         await tester.pumpAndSettle();
         expect(state.position.pixels, greaterThan(before));
+        if (entry.key == 'availability calendar') {
+          final dragged = state.position.pixels;
+          await tester.ensureVisible(find.byTooltip('Scroll to later days'));
+          await tester.pumpAndSettle();
+          await tester.tap(find.byTooltip('Scroll to later days'));
+          await tester.pumpAndSettle();
+          expect(state.position.pixels, greaterThan(dragged));
+          for (int i = 0; i < 4; i++) {
+            await tester.tap(find.byTooltip('Scroll to earlier days'));
+            await tester.pumpAndSettle();
+          }
+          expect(state.position.pixels, 0);
+        }
         expect(tester.takeException(), isNull);
       });
     }

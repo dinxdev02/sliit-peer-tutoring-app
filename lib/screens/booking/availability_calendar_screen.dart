@@ -21,6 +21,16 @@ class _AvailabilityCalendarScreenState
   bool settingsLoaded = false;
   String mode = 'Campus';
   final venue = TextEditingController(text: 'SLIIT Malabe Library');
+  final calendarScroll = ScrollController();
+  void scrollDays(int direction) {
+    if (!calendarScroll.hasClients) return;
+    calendarScroll.animateTo(
+      (calendarScroll.offset + direction * 240)
+          .clamp(0.0, calendarScroll.position.maxScrollExtent),
+      duration: const Duration(milliseconds: 250),
+      curve: Curves.easeOut,
+    );
+  }
   static const hours = [8, 10, 13, 15, 17];
   DateTime start(int row, int day) {
     final d =
@@ -37,6 +47,7 @@ class _AvailabilityCalendarScreenState
   @override
   void dispose() {
     venue.dispose();
+    calendarScroll.dispose();
     super.dispose();
   }
 
@@ -116,8 +127,27 @@ class _AvailabilityCalendarScreenState
                 child: const Text('Clear All'))
           ]),
           PeerCard(children: [
-            SingleChildScrollView(
+            Row(children: [
+              IconButton(tooltip: 'Scroll to earlier days',
+                  onPressed: () => scrollDays(-1),
+                  icon: const Icon(Icons.chevron_left)),
+              const Expanded(child: Text('Swipe left or right to see all days',
+                  textAlign: TextAlign.center)),
+              IconButton(tooltip: 'Scroll to later days',
+                  onPressed: () => scrollDays(1),
+                  icon: const Icon(Icons.chevron_right)),
+            ]),
+            Scrollbar(
+              controller: calendarScroll,
+              thumbVisibility: true,
+              trackVisibility: true,
+              interactive: true,
+              notificationPredicate: (notification) =>
+                  notification.metrics.axis == Axis.horizontal,
+              child: SingleChildScrollView(
+                controller: calendarScroll,
                 scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.only(bottom: 16),
                 child: Column(children: [
                   Row(children: [
                     const SizedBox(width: 60, child: Text('Time')),
@@ -163,7 +193,7 @@ class _AvailabilityCalendarScreenState
                                         ? peerMint
                                         : const Color(0xFFE4EDFF))))
                     ]),
-                ]))
+                ])))
           ]),
           PeerCard(children: [
             const PeerTitle('Designated Study Spots',
