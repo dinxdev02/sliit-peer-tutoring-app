@@ -66,6 +66,15 @@ class _LoginScreenState extends State<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 40),
+                Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(24),
+                    child: Image.asset('assets/branding/app-icon.png',
+                        width: 96, height: 96,
+                        semanticLabel: 'SLIIT Peer graduation cap logo'),
+                  ),
+                ),
+                const SizedBox(height: 20),
 
                 // SLIIT Peer Logo Header
                 Center(
