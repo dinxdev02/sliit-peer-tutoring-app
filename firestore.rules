@@ -2,7 +2,7 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     function signedIn() { return request.auth != null; }
-    function admin() { return signedIn() && request.auth.token.admin == true; }
+    function admin() { return signedIn() && request.auth.token.admin == true && request.auth.token.email == 'assignment-admin@my.sliit.lk'; }
     function own(id) { return signedIn() && request.auth.uid == id; }
     function member(b) { return signedIn() && request.auth.uid in b.participants; }
     function user(id) { return get(/databases/$(database)/documents/users/$(id)).data; }

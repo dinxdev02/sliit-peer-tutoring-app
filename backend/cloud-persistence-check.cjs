@@ -60,6 +60,19 @@ async function main() {
     await set(`tutorProfiles/${t}`,tutorProfile,tutor.idToken);
     await set(`tutorProfiles/${t}`,{...tutorProfile,bio:'Updated synthetic introduction.'},tutor.idToken);
     assert.equal((await get(`tutorProfiles/${t}`,tutor.idToken)).bio,'Updated synthetic introduction.');
+    const dashboardAdmin=await request(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${key}`,'POST',
+      {email:'assignment-admin@my.sliit.lk',password:'AssignmentAdmin123!',returnSecureToken:true});
+    const claims=JSON.parse(Buffer.from(dashboardAdmin.idToken.split('.')[1],'base64url').toString());
+    assert.equal(claims.admin,true);
+    await assert.rejects(() => set(`tutorProfiles/${t}`,{...tutorProfile,verified:true},tutor.idToken),e=>e.status===403);
+    await assert.rejects(() => request(base+'/users','GET',undefined,student.idToken),e=>e.status===403);
+    await commit([[`users/${t}`,{verificationStatus:'rejected'},['verificationStatus']],
+      [`tutorProfiles/${t}`,{verified:false},['verified']]],dashboardAdmin.idToken);
+    assert.equal((await get(`users/${t}`,tutor.idToken)).verificationStatus,'rejected');
+    await commit([[`users/${t}`,{verificationStatus:'approved'},['verificationStatus']],
+      [`tutorProfiles/${t}`,{verified:true},['verified']]],dashboardAdmin.idToken);
+    assert.equal((await get(`tutorProfiles/${t}`,student.idToken)).verified,true);
+    console.log('PASS administrator login, rejection, approval and denied student administrator access');
     const tutorUser=await get(`users/${t}`,admin);
     await set(`users/${t}`,{...tutorUser,verificationStatus:'approved'},admin);
     await set(`tutorProfiles/${t}`,{...tutorProfile,verified:true},admin);

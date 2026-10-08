@@ -40,6 +40,12 @@ class HomeDashboardScreen extends StatelessWidget {
                         fontSize: 27, fontWeight: FontWeight.w800)),
                 const SizedBox(height: 8),
                 const Text('Find a peer tutor for your SLIIT coursework today'),
+                if (data.isTutor && !data.verified)
+                  PeerCard(children: [
+                    Text(data.profile?['verificationStatus'] == 'rejected'
+                        ? 'Tutor application rejected or approval revoked. Contact the administrator to request another review.'
+                        : 'Your tutor application is awaiting admin approval. Your profile will appear in tutor search after approval.'),
+                  ]),
                 const SizedBox(height: 20),
                 TextField(
                     onSubmitted: (q) => openPeerScreen(

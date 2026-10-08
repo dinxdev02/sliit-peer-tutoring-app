@@ -13,6 +13,7 @@ class AppData extends ChangeNotifier {
   final List<StreamSubscription<dynamic>> _streams = [];
   String? error;
   bool loading = false, initialized = false;
+  bool isAdmin = false;
   Map<String, dynamic>? profile;
   List<PeerTutor> tutors = [];
   PeerTutor? ownTutor;
@@ -53,6 +54,7 @@ class AppData extends ChangeNotifier {
       await stream.cancel();
     }
     _streams.clear();
+    isAdmin = false;
     profile = null;
     tutors = [];
     ownTutor = null;
@@ -68,6 +70,14 @@ class AppData extends ChangeNotifier {
     loading = user != null;
     notifyListeners();
     if (user == null) return;
+    final token = await user.getIdTokenResult();
+    isAdmin = token.claims?['admin'] == true &&
+        user.email == 'assignment-admin@my.sliit.lk';
+    if (isAdmin) {
+      loading = false;
+      notifyListeners();
+      return;
+    }
     final database = db!;
     final pending = <String>{
       'profile',

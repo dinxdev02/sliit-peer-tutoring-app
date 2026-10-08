@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sliit_peer_tutoring/screens/admin/admin_dashboard_screen.dart';
 import 'package:sliit_peer_tutoring/services/app_data.dart';
 import 'package:sliit_peer_tutoring/services/backend_config.dart';
 import 'package:sliit_peer_tutoring/widgets/session_home.dart';
@@ -25,6 +26,7 @@ class _Auth extends Fake implements FirebaseAuth {
 void main() {
   setUp(() {
     final data = AppData.instance;
+    data.isAdmin = false;
     data.auth = _Auth();
     data.profile = null;
     data.ownTutor = null;
@@ -37,6 +39,13 @@ void main() {
     AppData.instance.profile = null;
     AppData.instance.ownTutor = null;
     AppData.instance.slots = [];
+  });
+
+  testWidgets('Student cannot open administrator dashboard', (tester) async {
+    await tester.pumpWidget(const MaterialApp(home: AdminDashboardScreen()));
+    expect(find.text('Administrator access required.'), findsOneWidget);
+    expect(find.text('Approve'), findsNothing);
+    expect(tester.takeException(), isNull);
   });
 
   testWidgets('Signed-in account without a profile resumes registration',

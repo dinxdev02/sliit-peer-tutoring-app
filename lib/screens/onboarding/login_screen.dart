@@ -33,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
     final ok = await perform(context, () async {
-      if (!AuthService.validEmail(_emailController.text)) {
+      if (_emailController.text.trim().toLowerCase() != 'admin' && !AuthService.validEmail(_emailController.text)) {
         throw StateError('Use your @my.sliit.lk student email.');
       }
       await AuthService().loginWithEmail(
@@ -99,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 // SLIIT Email Label
                 const Text(
-                  'SLIIT Email',
+                  'SLIIT Email or admin',
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
