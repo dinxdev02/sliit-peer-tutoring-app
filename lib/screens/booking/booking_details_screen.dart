@@ -82,8 +82,10 @@ class BookingDetailsScreen extends StatelessWidget {
                 orange: true,
                 action: () => UploadService.openTeams(booking.teamsUrl)),
           if (!tutor && booking.status == 'confirmed')
-            const PeerCard(children: [Text(
-                'Your tutor has accepted this booking. Cancellation and rescheduling are now closed. Message your tutor if you need help.')]),
+            const PeerCard(children: [
+              Text(
+                  'Your tutor has accepted this booking. Cancellation and rescheduling are now closed. Message your tutor if you need help.')
+            ]),
           if (!tutor && booking.status == 'pending')
             AsyncPeerButton('Reschedule Session',
                 secondary: true,
@@ -131,7 +133,15 @@ class BookingDetailsScreen extends StatelessWidget {
             AsyncPeerButton('Mark Session Completed',
                 action: () => repo.transition(booking, 'completed')),
           if (!tutor && booking.status == 'completed')
-            PeerButton('Review This Session',
+            if (data.reviews
+                .any((r) => r.id == booking.id && r.tuteeId == data.uid))
+              const PeerBadge('Review submitted'),
+          if (!tutor && booking.status == 'completed')
+            PeerButton(
+                data.reviews
+                        .any((r) => r.id == booking.id && r.tuteeId == data.uid)
+                    ? 'Edit Your Review'
+                    : 'Review This Session',
                 onPressed: () => openPeerScreen(
                     context, ReviewModalScreen(bookingId: booking.id))),
           PeerButton('Report Session Issue',

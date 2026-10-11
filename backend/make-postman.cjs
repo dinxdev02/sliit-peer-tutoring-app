@@ -1,0 +1,32 @@
+const fs = require('node:fs');
+const path = require('node:path');
+const out = path.resolve(__dirname, '../reports/postman');
+fs.mkdirSync(out, {recursive:true});
+const items=[];
+function add(name, method, url, body, status, extra='', token='idToken', pre='') {
+  const request={method,header:[{key:'Content-Type',value:'application/json'}],url};
+  if(token) request.header.push({key:'Authorization',value:`Bearer {{${token}}}`});
+  if(body) request.body={mode:'raw',raw:JSON.stringify(body,null,2),options:{raw:{language:'json'}}};
+  const event=[{listen:'test',script:{type:'text/javascript',exec:[`pm.test('${status} expected', () => pm.response.to.have.status(${status}));`,extra]}}];
+  if(pre)event.unshift({listen:'prerequest',script:{type:'text/javascript',exec:[pre]}});
+  items.push({name,request,event});
+}
+const auth='https://identitytoolkit.googleapis.com/v1/accounts:';
+const base='https://firestore.googleapis.com/v1/projects/{{projectId}}/databases/(default)/documents';
+const credentials={email:'{{testEmail}}',password:'{{testPassword}}',returnSecureToken:true};
+const capture="if(pm.response.code===200){const d=pm.response.json();pm.environment.set('idToken',d.idToken);pm.environment.set('uid',d.localId);}";
+add('01 Register a temporary student','POST',auth+'signUp?key={{apiKey}}',credentials,200,capture,null,"pm.environment.set('testEmail','postman-audit-'+Date.now()+'@my.sliit.lk');pm.environment.set('createdAt',new Date().toISOString());");
+add('02 Create own pending profile','PATCH',base+'/users/{{uid}}',{fields:{name:{stringValue:'Postman Audit Student'},email:{stringValue:'{{testEmail}}'},role:{stringValue:'tutee'},year:{stringValue:'Year 2'},program:{stringValue:'Information Technology'},verificationStatus:{stringValue:'pending'},verificationEvidence:{nullValue:null},guidelinesAccepted:{booleanValue:false},pledgeAccepted:{booleanValue:true},pledgeAcceptedAt:{timestampValue:'{{createdAt}}'},createdAt:{timestampValue:'{{createdAt}}'}}},200);
+add('03 Read own profile','GET',base+'/users/{{uid}}',null,200,"pm.test('Own email matches',()=>pm.expect(pm.response.json().fields.email.stringValue).to.eql(pm.environment.get('testEmail')));");
+add('04 Update profile name','PATCH',base+'/users/{{uid}}?updateMask.fieldPaths=name',{fields:{name:{stringValue:'Postman Updated Student'}}},200);
+add('05 Fresh login','POST',auth+'signInWithPassword?key={{apiKey}}',credentials,200,capture,null);
+add('06 Verify persisted profile','GET',base+'/users/{{uid}}',null,200,"pm.test('Updated name persists',()=>pm.expect(pm.response.json().fields.name.stringValue).to.eql('Postman Updated Student'));");
+add('07 Student cannot list all users','GET',base+'/users?pageSize=1',null,403);
+add('08 Student cannot self approve','PATCH',base+'/users/{{uid}}?updateMask.fieldPaths=verificationStatus',{fields:{verificationStatus:{stringValue:'approved'}}},403);
+add('09 Unauthenticated profile read denied','GET',base+'/users/{{uid}}',null,403,'',null);
+add('10 Administrator login for cleanup','POST',auth+'signInWithPassword?key={{apiKey}}',{email:'{{adminEmail}}',password:'{{adminPassword}}',returnSecureToken:true},200,"if(pm.response.code===200)pm.environment.set('adminToken',pm.response.json().idToken);",null);
+add('11 Delete ONLY temporary profile','DELETE',base+'/users/{{uid}}',null,200,'','adminToken');
+add('12 Delete temporary authentication account','POST',auth+'delete?key={{apiKey}}',{idToken:'{{idToken}}'},200,"if(pm.response.code===200){['idToken','adminToken','uid'].forEach(k=>pm.environment.unset(k));}",null);
+fs.writeFileSync(path.join(out,'SLIIT-Peer.postman_collection.json'),JSON.stringify({info:{name:'SLIIT Peer — Authentication, Profiles and Permissions',schema:'https://schema.getpostman.com/json/collection/v2.1.0/collection.json',description:'Run all requests in order, once. Creates a temporary account and removes it in requests 11–12. API testing only; does not certify UI, bookings or human usability.'},item:items},null,2));
+fs.writeFileSync(path.join(out,'SLIIT-Peer.postman_environment.json'),JSON.stringify({name:'SLIIT Peer Cloud — Fill locally',values:Object.entries({projectId:'sliit-peer-tutoring',apiKey:'',testPassword:'PeerPostman123!',adminEmail:'assignment-admin@my.sliit.lk',adminPassword:''}).map(([key,value])=>({key,value,type:['adminPassword','testPassword','apiKey'].includes(key)?'secret':'default',enabled:true})),_postman_variable_scope:'environment'},null,2));
+console.log('Created collection: 12 requests, 14 assertions. Environment contains no app key or administrator password.');

@@ -14,6 +14,57 @@ import 'package:sliit_peer_tutoring/services/app_data.dart';
 import 'package:sliit_peer_tutoring/models/peer_records.dart';
 
 void main() {
+  testWidgets('Past sessions separate awaiting reviews and reviewed sessions',
+      (tester) async {
+    final data = AppData.instance;
+    PeerBooking session(String id, String status) => PeerBooking(id, {
+          'tutorId': 'tutor',
+          'tuteeId': data.uid,
+          'tutorName': id,
+          'tuteeName': 'Student',
+          'module': 'IT3060',
+          'slotId': id,
+          'status': status,
+          'mode': 'Campus',
+          'venue': 'Library',
+          'notes': '',
+          'start': DateTime.now()
+              .subtract(const Duration(hours: 2))
+              .toIso8601String(),
+          'end': DateTime.now()
+              .subtract(const Duration(hours: 1))
+              .toIso8601String(),
+        });
+    data.bookings = [
+      session('Needs review', 'completed'),
+      session('Already reviewed', 'completed'),
+      session('Unfinished', 'confirmed')
+    ];
+    data.reviews = [
+      PeerReview('Already reviewed', {
+        'tutorId': 'tutor',
+        'tuteeId': data.uid,
+        'author': 'Student',
+        'comment': 'Helpful',
+        'rating': 4,
+        'tags': <String>[]
+      })
+    ];
+    await tester.pumpWidget(const MaterialApp(home: StudentScheduleScreen()));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Past Sessions (3)'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Awaiting Review (1)'));
+    await tester.pumpAndSettle();
+    expect(find.text('Needs review'), findsOneWidget);
+    expect(find.text('Already reviewed'), findsNothing);
+    expect(find.text('Unfinished'), findsNothing);
+    await tester.tap(find.text('Reviewed (1)'));
+    await tester.pumpAndSettle();
+    expect(find.text('Already reviewed'), findsOneWidget);
+    expect(find.text('Needs review'), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
   tearDown(() {
     AppData.instance.bookings = [];
     AppData.instance.tutors = [];

@@ -19,6 +19,7 @@ class StudentScheduleScreen extends StatefulWidget {
 
 class _StudentScheduleScreenState extends State<StudentScheduleScreen> {
   int tab = 0;
+  int reviewFilter = 0;
   @override
   Widget build(BuildContext context) => DataView(builder: (context, data) {
         final own = data.bookings.where((b) => b.tuteeId == data.uid).toList();
@@ -35,6 +36,19 @@ class _StudentScheduleScreenState extends State<StudentScheduleScreen> {
                   (b) => b.status == 'pending' && b.end.isAfter(DateTime.now()))
               .toList()
         ];
+        final reviewedIds = data.reviews
+            .where((r) => r.tuteeId == data.uid)
+            .map((r) => r.id)
+            .toSet();
+        groups[1].sort((a, b) => b.end.compareTo(a.end));
+        final past = groups[1];
+        final awaiting = past
+            .where(
+                (b) => b.status == 'completed' && !reviewedIds.contains(b.id))
+            .toList();
+        final reviewed = past.where((b) => reviewedIds.contains(b.id)).toList();
+        final visible =
+            tab == 1 ? [past, awaiting, reviewed][reviewFilter] : groups[tab];
         return PeerPage(
             title: 'Bookings',
             bottom: const PeerNavigation(index: 2),
@@ -69,8 +83,34 @@ class _StudentScheduleScreenState extends State<StudentScheduleScreen> {
                     'Pending Requests'
                   ][tab],
                   icon: Icons.event_available),
-              for (final booking in groups[tab]) _card(context, booking, data),
-              if (groups[tab].isEmpty)
+              if (tab == 1) ...[
+                Wrap(spacing: 8, runSpacing: 8, children: [
+                  for (final entry in [
+                    'All (${past.length})',
+                    'Awaiting Review (${awaiting.length})',
+                    'Reviewed (${reviewed.length})'
+                  ].asMap().entries)
+                    ChoiceChip(
+                        label: Text(entry.value),
+                        selected: reviewFilter == entry.key,
+                        onSelected: (_) =>
+                            setState(() => reviewFilter = entry.key))
+                ]),
+                const SizedBox(height: 16),
+                const Text(
+                    'Reviews become available when your tutor marks the session completed.'),
+                const SizedBox(height: 12),
+              ],
+              for (final booking in visible) _card(context, booking, data),
+              if (tab == 1 && visible.isEmpty)
+                PeerCard(children: [
+                  Text(reviewFilter == 1
+                      ? 'No completed sessions awaiting a review.'
+                      : reviewFilter == 2
+                          ? 'Your reviewed sessions will appear here.'
+                          : 'Your past sessions will appear here.')
+                ]),
+              if (tab != 1 && visible.isEmpty)
                 PeerCard(color: const Color(0xFFE3EDFF), children: [
                   const Center(
                       child: Icon(Icons.calendar_month,
@@ -114,10 +154,21 @@ class _StudentScheduleScreenState extends State<StudentScheduleScreen> {
             secondary: true,
             onPressed: () => openPeerScreen(
                 context, BookingDetailsScreen(bookingId: booking.id))),
-        if (booking.mode == 'Online' && booking.status == 'confirmed')
+        if (booking.status == 'confirmed' &&
+            !booking.end.isAfter(DateTime.now()))
+          const Text('Awaiting tutor completion',
+              style: TextStyle(fontWeight: FontWeight.w600)),
+        if (booking.mode == 'Online' &&
+            booking.status == 'confirmed' &&
+            booking.end.isAfter(DateTime.now()))
           AsyncPeerButton('Join Teams Meeting',
               orange: true,
               action: () => UploadService.openTeams(booking.teamsUrl)),
+        if (booking.status == 'completed')
+          if (data.reviews
+              .any((r) => r.id == booking.id && r.tuteeId == data.uid))
+            PeerBadge(
+                'Review submitted • ${data.reviews.firstWhere((r) => r.id == booking.id && r.tuteeId == data.uid).rating.toInt()}/5'),
         if (booking.status == 'completed')
           PeerButton(
               data.reviews.any((r) => r.id == booking.id)

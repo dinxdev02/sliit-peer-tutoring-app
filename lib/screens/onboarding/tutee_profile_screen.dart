@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../../widgets/peer_ui.dart';
 import '../../widgets/peer_navigation.dart';
 import '../../widgets/data_widgets.dart';
+import '../../widgets/booking_workflow.dart';
+import '../../models/peer_records.dart';
 import '../booking/student_schedule_screen.dart';
 import '../booking/booking_details_screen.dart';
 import '../messaging/review_modal_screen.dart';
@@ -205,8 +207,21 @@ class _TuteeProfileScreenState extends State<TuteeProfileScreen> {
                   for (final r
                       in data.reviews.where((r) => r.tuteeId == data.uid))
                     PeerCard(children: [
+                      PeerPerson(
+                          name: data.booking(r.id)?.tutorName ?? 'Peer tutor',
+                          subtitle: data.booking(r.id) == null
+                              ? 'Submitted session review'
+                              : moduleLabel(data.booking(r.id)!.module)),
+                      if (data.booking(r.id) != null)
+                        Text(
+                            '${bookingDate(data.booking(r.id)!)} • ${bookingTime(data.booking(r.id)!)}'),
                       PeerTitle('★ ${r.rating.toInt()}/5'),
                       Text(r.comment),
+                      if (data.booking(r.id) != null)
+                        PeerButton('View Session',
+                            secondary: true,
+                            onPressed: () => openPeerScreen(context,
+                                BookingDetailsScreen(bookingId: r.id))),
                       PeerButton('Edit / Delete Review',
                           secondary: true,
                           onPressed: () => openPeerScreen(
